@@ -1,0 +1,3 @@
+# Set coding language to detect
+*.css linguist-detectable=false
+*.php linguist-detectable=true
