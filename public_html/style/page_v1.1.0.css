@@ -1,0 +1,266 @@
+@charset "utf-8"; /* Use Unicode Transformation Format 8 character set */
+
+/* ========== GENERIC SETTINGS ========== */
+
+body {
+	font-family: Arial, Verdana, Calibri;
+	background-color: #F1F1F1;
+	margin-top: 50px; 
+	height: 100%;
+	width: auto !important;	
+	overflow-y: scroll;	
+}
+
+p, a {
+	font-size: 1em;
+	font-weight: normal;
+}
+
+b { 
+	font-size: 1em;
+}
+
+h1 {
+	margin: 0.5em;
+	font-size: 2em;
+	text-align: center;
+	text-decoration: underline;
+}
+
+h2 {
+	margin: 0.5em;
+	font-size: 1.5em;
+}
+
+h3 {
+	font-size: 1.25em;
+}
+
+hr {
+	margin: 8px 10px; 
+}
+
+
+
+/* ========== NAVIGATION BAR ========== */
+.nav {
+	background-color: white;
+	box-shadow: 0px 2px darkgray;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding-left: 10px;
+	height: calc(1em + 30px);
+	position: fixed;
+	width: 100%;
+	z-index: 100 !important;   /* Stack order is 100, therefore it is infront of other object */
+}
+
+.nav a {
+	float: left;
+	color: black;
+	text-align: center;
+	padding: 14px;
+	text-decoration: none;
+	border-radius: 15px 15px 0 0;
+}
+
+.nav a:hover,
+.nav .dropdown:hover {	
+	background-color: gainsboro;
+	border: darkgray solid 2px;
+	border-bottom: none;
+}
+
+.nav .dropbtn {
+	border-radius: 15px 15px 0 0;
+	background-color: inherit;
+	padding: 14px;
+	font-size: 1em;
+	border: none;
+}
+.nav .dropbtn img {
+	height: 15px;
+	width: 15px; 
+	/* vertical-align: text-bottom; */
+}
+  
+.nav .dropdown {
+	border-radius: 15px 15px 0 0;
+	float: left;
+	position: relative;
+}
+.nav .dropdown:hover {
+	border-right: none;
+}
+.nav .dropdown:hover:before,
+.nav .dropdown:hover:after {
+	z-index: 3;
+    content: '';
+    height: 50%;
+    background-color: none;
+    border: darkgray solid 2px;
+    position: absolute;
+    bottom: 1px;
+}
+.nav .dropdown:hover:before {
+	width: 50%;
+	border-left: 0;
+    border-bottom: 0;
+    border-radius: 0 15px 0 0;
+    top: -2px;
+	right: -2px;
+}
+.nav .dropdown:hover:after {
+    width: 5px;
+    border-top: 0;
+    border-right: 0;
+    border-radius: 0 0 0 10px;
+}
+
+.nav .dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: gainsboro;
+	min-width: 125px;
+	margin-top: -3px;
+	margin-left: -2px;
+	border: darkgray solid 2px;
+	border-radius: 0 15px 15px 15px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+}
+.nav .dropdown-content:before {
+	z-index: 2;
+    content: '';
+    border-top: gainsboro solid 5px;
+    box-shadow: none;
+    position: absolute;
+	width: 103px;
+    top: -5px;
+}
+  
+.nav .dropdown-content a {
+	color: black;
+	padding: 12px 10%;
+	text-decoration: none;
+	display: block;
+  	width: 80%;
+  	text-align: left;
+  	border-radius: 0;
+}
+
+.nav .dropdown-content a:first-child {
+	border-radius: 0 15px 0 0;
+}
+
+.nav .dropdown-content a:last-child {
+	border-radius: 0 0 15px 15px;
+}
+  
+.nav .dropdown-content a:hover { 
+    border: none; 
+    background-color: silver;
+}
+  
+.nav .dropdown:hover .dropdown-content {
+	display: block; 
+}
+
+
+
+/* ========== MAIN BODY ========== */
+
+#page {
+	margin-top: 50px;
+	padding: 15px;
+}
+
+
+/* ===== Contents ===== */
+#content {
+	padding: 5px;
+	background-color: white;
+	border-radius: 15px;
+	border-style: double;
+	border-width: 5px;
+	border-color: lightgray;
+}
+
+
+@media only screen and (orientation: portrait) and (max-device-width: 450px) {
+	
+	/* ===== Generic Settings ===== */
+	body {
+        margin-top: calc(2em + 32px);
+	}
+
+	p, a, b {
+		font-size: 2em;
+	}
+	
+	h1 {
+		font-size: 3em;
+	}
+
+
+	.nav {
+		height: calc(2em + 32px);
+	}
+	
+	.nav .dropbtn {
+		font-size: 2em;
+	}
+
+	.nav .dropbtn img {
+		height: 20px;
+		width: 20px; 
+	}
+
+	.nav .dropdown-content {
+        min-width: 200px;
+	}
+	
+	.nav .dropdown-content:before {
+		width: 166px;
+	}
+}
+
+
+@media only screen and (orientation: landscape) and (max-device-width: 850px) {
+	
+	/* ===== Generic Settings ===== */
+	body {
+        margin-top: calc(1.2em + 32px);
+	}
+
+	p, a, b {
+		font-size: 1.2em;
+	}
+	
+	h1 {
+		font-size: 2.5em;
+	}
+
+
+	.nav {
+		height: calc(1.5em + 32px);
+	}
+
+	.nav .dropbtn {
+		font-size: 1.2em;
+	}
+
+	.nav .dropbtn img {
+		height: 20px;
+		width: 20px; 
+	}
+
+	.nav .dropdown-content {
+        min-width: 175px;
+	}
+	
+	.nav .dropdown-content:before {
+		width: 137px;
+	}
+}

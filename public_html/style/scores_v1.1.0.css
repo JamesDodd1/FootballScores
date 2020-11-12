@@ -1,0 +1,117 @@
+@charset "utf-8"; /* Use Unicode Transformation Format 8 character set */
+
+/* ========== Scores ========== */
+#points {
+	table-layout: fixed;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	border-spacing: 0; 
+}
+
+#points tr {
+    border-top-style: hidden;
+    border-bottom-style: hidden;
+}
+
+#points tr:nth-child(even) {
+	background-color: lightgray;
+}
+
+#points tr:nth-child(odd) {
+	background-color: white;
+}
+
+#points td, #points th {
+	width: auto;
+    border: 1px dotted grey;
+    border-top-style: hidden;
+    border-left-style: hidden;
+	padding: 10px 5px;
+}
+
+#points tr:first-child th {
+    border-top: 0;
+}
+
+#points tr:last-child td {
+    border-bottom: 0;
+}
+
+#points tr td:first-child, #points tr th:first-child {
+    border-left: 0;
+}
+
+#points tr td:last-child, #points tr th:last-child {
+    border-right: 0;
+}
+
+#points td p, #points th p {
+	margin: 0px;
+}
+
+#points .weekNum {
+	border-bottom-style: hidden; 
+}
+
+#points .previous {
+	border-right-style: hidden; 
+	border-bottom-style: hidden; 
+	text-align: right;
+}
+
+#points .equals {
+	border-right-style: hidden;
+	border-bottom-style: hidden; 
+	text-align: center;
+}
+
+#points .total {
+	border-bottom-style: hidden; 
+	text-align: left;
+}
+
+#points .line td {
+	border-bottom-style: hidden; 
+	padding: 0px 5px;
+}
+
+#points .line td hr {
+	margin: 0px -5px;
+}
+
+
+/* ========== DEVICE LANDSCAPE ORIENTATED ========== */
+@media (max-width: 1000px) and (orientation: landscape) {
+
+    #points p, #points b {
+        font-size: 1.2em;
+    }
+}
+
+
+/* ========== DEVICE PORTAIT ORIENTATION ========== */
+@media (max-width: 1000px) and (orientation: portrait) {
+
+    #points p, #points b {
+        font-size: 1.3em;
+    }
+}
+
+
+/* ========== IPAD LANDSCAPE ORIENTATION ========== */
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: landscape) {
+
+    #points p, #points b {
+        font-size: 1.2em;
+    }
+}
+
+
+/* ========== IPAD PORTAIT ORIENTATION ========== */
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
+
+    #points p, #points b {
+        font-size: 1.2em;
+    }
+}
