@@ -1,6 +1,6 @@
 # FootballScores
 
-A website to enter predicted score for Premier League football games.
+A website to enter predicted scores for Premier League football games.
 
 
 <img src="./images/Website.png" alt="Web page with menu bar along the top, main portion of page contain a vertical list of each match and its kickoff time, the right side contain a leaderboard of total points and below is a Premier League table" height=auto width=100% />
