@@ -1,0 +1,5 @@
+# Temp Files
+.DS_Store
+
+# Config file
+public_html/database/config.php
