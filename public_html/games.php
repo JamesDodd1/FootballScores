@@ -24,7 +24,7 @@
 ?>
 
 <head>
-	<title> Football Scores - <?php $user->getName(); ?> </title>
+	<title> Football Scores - <?php echo $user->getName(); ?> </title>
 	
 	<meta charset="utf-8" />
 	
