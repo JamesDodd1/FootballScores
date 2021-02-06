@@ -35,12 +35,14 @@
 	$today = new DateTime("now", new DateTimeZone('Europe/London')); // Current Date
 	//$today = new DateTime("2020-01-01"); 
 
-	function getKickOff($match, DateTime $lastKickOff) 
+	function getKickOff($match, $lastKickOff) 
 	{
-		$kickOff = $match->getKickOff();
+        $isFirstGame = is_null($lastKickOff) ? true : false;
+        $kickOff = $match->getKickOff();
+        $lastKickOff = (new DateTime($lastKickOff));
 
 		// If match is on a new day
-		if ($kickOff->format('j') != $lastKickOff->format('j')) 
+		if ($isFirstGame || $kickOff->format('j') != $lastKickOff->format('j'))
 		{
 			$style = "style='padding-right: 0;'";
 			$kickOffDay = $kickOff->format('l jS F');
@@ -111,7 +113,7 @@
 				{ 
 					++$game;
 					
-					$kickOff = getKickOff($match, new DateTime($kickOff["time"]));
+                    $kickOff = getKickOff($match, $kickOff["time"]);
 
 					$style = $kickOff["style"];
 					$day = $kickOff["day"];
