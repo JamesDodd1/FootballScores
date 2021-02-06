@@ -24,7 +24,7 @@
 ?>
 
 <head>
-	<title> Football Scores - <?php $user->getName() ?> </title>
+	<title> Football Scores - <?php $user->getName(); ?> </title>
 	
 	<meta charset="utf-8" />
 	
@@ -126,7 +126,7 @@
 					{ 
 						++$game;
 						
-						$kickOff = getKickOff($match, new DateTime($kickOff["time"]));
+						$kickOff = getKickOff($match, $kickOff["time"]);
 
 						$style = $kickOff["style"];
 						$day = $kickOff["day"];
@@ -588,12 +588,14 @@
 	}
 
 
-	function getKickOff($match, DateTime $lastKickOff) 
+	function getKickOff($match, $lastKickOff) 
 	{
-		$kickOff = $match->getKickOff();
+        $isFirstGame = is_null($lastKickOff) ? true : false;
+        $kickOff = $match->getKickOff();
+        $lastKickOff = (new DateTime($lastKickOff));
 
 		// If match is on a new day
-		if ($kickOff->format('j') != $lastKickOff->format('j')) 
+		if ($isFirstGame || $kickOff->format('j') != $lastKickOff->format('j')) 
 		{
 			$style = "style='padding-right: 0;'";
 			$kickOffDay = $kickOff->format('l jS F');

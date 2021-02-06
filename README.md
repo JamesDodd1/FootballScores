@@ -77,7 +77,6 @@ Full leaderboard (left) and mini leaderboard (right)
 - Temporarily save current scores (e.g. in cookies) while entering results, incase page closed etc.
 - Redesign full leaderboard to be more stylish
 - Refactor code 
-- Fix bug where first day header not shown that specific day
 
 
 ## 5. Status
