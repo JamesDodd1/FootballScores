@@ -37,7 +37,7 @@
         </div>
 
 		<div id="content" class="groupScores">
-			<?php include_once "$root/leaderboard.php"; ?>
+			<?php include_once "$root/scores/leaderboard.php"; ?>
 		</div>
 
 		<div id="content" class="league">
