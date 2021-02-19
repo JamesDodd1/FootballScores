@@ -23,7 +23,7 @@
             <tr class='player'>
                 <td class='pos'> <p> " . $pos++ . " </p> </td>
                 <td class='name'> <p> $player->Name </p> </td>
-                <td class='weekPts'> <p> + $player->WeekScore </p> </td>
+                <td class='weekPts'> <p> +$player->WeekScore </p> </td>
                 <td class='totalPts'> <p> $player->SeasonScore </p> </td>
             </tr>";
         }
