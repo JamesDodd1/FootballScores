@@ -17,20 +17,14 @@
 
         $pos = 1;
         $season = "2020";
-        /*
-        $seasonScores = $db->getSeasonScore($season);
-        usort($seasonScores, function($a, $b) {
-            if (($a->Score - $b->Score) < 0)
-                return $b->Score - $a->Score;
-        });
-        */
-        foreach ($db->leaderboard($season) as $player) {
+        
+        foreach ((new Database())->leaderboard($season) as $player) {
             echo "
             <tr class='player'>
                 <td class='pos'> <p> " . $pos++ . " </p> </td>
-                <td class='name'> <p> " . $player->Name . " </p> </td>
-                <td class='weekPts'> <p> +" . $player->WeekScore . " </p> </td>
-                <td class='totalPts'> <p> " . $player->SeasonScore . " </p> </td>
+                <td class='name'> <p> $player->Name </p> </td>
+                <td class='weekPts'> <p> + $player->WeekScore </p> </td>
+                <td class='totalPts'> <p> $player->SeasonScore </p> </td>
             </tr>";
         }
         ?>
