@@ -1,4 +1,9 @@
 
+<?php
+    $root = $_SERVER['DOCUMENT_ROOT'];
+    include_once "$root/database/database.php";
+?>
+
 <div class="nav">
 	<a href="/"> Home </a>
 	<div class="dropdown">
@@ -15,8 +20,6 @@
 
 <?php
 	function usersHTML() {
-        $root = $_SERVER['DOCUMENT_ROOT'];
-		include_once "$root/database/database.php";
 		$db = new Database();
 
 		$userDropDown = "";

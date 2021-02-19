@@ -1,8 +1,6 @@
 
 <?php 
     $root = $_SERVER['DOCUMENT_ROOT'];
-	include_once "$root/database/database.php";
-	$db = new Database();
 
     // Set Variables
 	$user = getUser();
@@ -69,7 +67,10 @@
 <?php
 	function getUser(): ?User
 	{
-		global $db;
+		global $root;
+		
+		include_once "$root/database/database.php";
+		$db = new Database();
 		
 		if (isset($_REQUEST['user']))
 		{

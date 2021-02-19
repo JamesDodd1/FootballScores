@@ -12,6 +12,9 @@
         </tr>
 
         <?php
+        $root = $_SERVER['DOCUMENT_ROOT'];
+        include_once "$root/database/database.php";
+
         $pos = 1;
         $season = "2020";
         /*
