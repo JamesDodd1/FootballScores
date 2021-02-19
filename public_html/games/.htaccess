@@ -1,0 +1,14 @@
+
+#RewriteEngine on
+
+RewriteBase /games/
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([a-zA-Z]+)/([0-9]+)/([0-9]+)$ index.php?user=$1&season=$2&week=$3 [L,QSA]
+RewriteRule ^([a-zA-Z]+)/([0-9]+)$ index.php?user=$1&weekNum=$2 [L,QSA]
+RewriteRule ^([a-zA-Z]+)$ index.php?user=$1 [L,QSA]
+
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [L]
