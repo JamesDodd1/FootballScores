@@ -1,8 +1,9 @@
 
-<script type="text/javascript" src="clubForm.js"></script>
+<script type="text/javascript" src="/games/clubForm.js"></script>
 
 <?php
-	include_once __DIR__ . "/database/database.php";
+    $root = $_SERVER['DOCUMENT_ROOT'];
+	include_once "$root/database/database.php";
 
     class WeekGames {
         protected $playerName;

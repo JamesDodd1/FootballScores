@@ -29,7 +29,8 @@
 
 
 <?php
-	include_once __DIR__ . "/database/database.php";
+    $root = $_SERVER['DOCUMENT_ROOT'];
+	include_once "$root/database/database.php";
 
     class WeekNumSelector {
         public function __construct() { }
@@ -41,7 +42,7 @@
 
             if ($selectedWeekNum == 0)
                 $selectedWeekNum = ($db->getCurrentWeek($season, $selectedWeekNum))->getWeekNum();
-            
+
 
             $weekNumCount = $db->totalWeeks($season);
             
@@ -126,24 +127,22 @@
 
 
 <script type="text/javascript">
-    //console.log(window.location.href);
-    //console.log(url);
-
-
+    //console.log(location.protocol);
+    //console.log(location.host);
+    //console.log(location.pathname);
+    
     function loadNewWeek(newWeekNum) {
         let isResults = <?php echo $user->getIsAnswers() ? 1 : 0 ?>;
 
-        let url = location.protocol + '//' + location.host + location.pathname;
+        //let url = location.protocol + '//' + location.host + location.pathname;
         let parameters = "";
 
         if (isResults) 
-            parameters = "?weekNum=" + newWeekNum;
+            parameters = "/" + newWeekNum;
         else
-            parameters = "?user=<?php echo $user->getName(); ?>&weekNum=" + newWeekNum;
+            parameters = "/" + "<?php echo $user->getName(); ?>" + "/" + newWeekNum;
 
-        //console.log("Is results: " + isResults);
-        //console.log("New URL: " + url + parameters);
-
-        window.location.replace(url + parameters);
+        //console.log("New URL: " + "/games" + parameters);
+        window.location.replace("/games" + parameters);
     }
 </script>
