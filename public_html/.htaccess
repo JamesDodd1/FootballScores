@@ -1,0 +1,16 @@
+#Alternate default index page
+DirectoryIndex index.php
+php_value display_errors On
+php_flag magic_quotes 1
+php_flag magic_quotes_gpc 1
+php_value mbstring.http_input auto
+php_value date.timezone Europe/London
+
+
+RewriteEngine on
+
+Redirect /Index.php /
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [L]

@@ -1,5 +1,7 @@
-<!DOCTYPE html>
 
+<?php $root = $_SERVER['DOCUMENT_ROOT']; ?>
+
+<!DOCTYPE html>
 <HTML>
 
 <head>
@@ -9,21 +11,14 @@
 	
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />	
 	
-	<?php include_once 'icons.php'; ?>
+	<?php include_once "$root/icons.php"; ?>
 	
-	<link href="style/page_v1.1.0.css" type="text/css" rel="stylesheet" />
-	<link href="style/scores_v1.1.0.css" type="text/css" rel="stylesheet" />
+	<link href="/style/page_v1.1.0.css" type="text/css" rel="stylesheet" />
+	<link href="/style/scores_v1.1.0.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body>
-	
-	<?php 
-		include_once 'database/database.php';
-		$db = new Database();
-
-		// Naviagation bar	
-		include_once 'nav_bar.php'; 
-	?>
+	<?php include_once "$root/nav_bar.php"; ?>
 	
 	
 	<!-- ========== Page main body ========== -->
@@ -49,6 +44,9 @@
 				<tr>
 					<th> </th>
 					<?php
+						include_once "$root/database/database.php";
+						$db = new Database();
+		
 						// Loop through each person
 						foreach ($db->getAllUsers(false) as $user) 
 						{
