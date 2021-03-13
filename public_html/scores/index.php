@@ -1,5 +1,9 @@
 
-<?php $root = $_SERVER['DOCUMENT_ROOT']; ?>
+<?php 
+    $root = $_SERVER['DOCUMENT_ROOT'];
+	include_once "$root/database/database.php";
+	$db = new Database();
+?>
 
 <!DOCTYPE html>
 <HTML>
@@ -44,9 +48,6 @@
 				<tr>
 					<th> </th>
 					<?php
-						include_once "$root/database/database.php";
-						$db = new Database();
-		
 						// Loop through each person
 						foreach ($db->getAllUsers(false) as $user) 
 						{

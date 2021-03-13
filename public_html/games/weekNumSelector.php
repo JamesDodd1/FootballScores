@@ -1,5 +1,10 @@
 
 <?php
+    $root = $_SERVER['DOCUMENT_ROOT'];
+	include_once "$root/database/database.php";
+    $db = new Database();
+
+    
     $isWeekNumSet = isset($_REQUEST['weekNum']);
     $weekNum = $isWeekNumSet ? intval($_REQUEST['weekNum']) : 0;
     
@@ -29,9 +34,6 @@
 
 
 <?php
-    $root = $_SERVER['DOCUMENT_ROOT'];
-	include_once "$root/database/database.php";
-
     class WeekNumSelector {
         public function __construct() { }
 

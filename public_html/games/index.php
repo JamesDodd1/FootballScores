@@ -1,6 +1,8 @@
 
 <?php 
     $root = $_SERVER['DOCUMENT_ROOT'];
+	include_once "$root/database/database.php";
+	$db = new Database();
 
     // Set Variables
 	$user = getUser();
