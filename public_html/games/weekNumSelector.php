@@ -140,7 +140,7 @@
         let parameters = "";
 
         if (isResults) 
-            parameters = "/" + newWeekNum;
+            parameters = "/Results/" + newWeekNum;
         else
             parameters = "/" + "<?php echo $user->getName(); ?>" + "/" + newWeekNum;
 
