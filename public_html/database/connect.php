@@ -1,51 +1,53 @@
 
 <?php
-	$configs = include('config_example.php');
+	//$configs = include('config_example.php');
 
     class Connection
     {
-        private static $instance = null;
-        private $con = null;
+        /** @var PDO */
+        private $connection = null;
 
 
-        protected function __construct() 
+        public function __construct() 
         { 
-            $this->dbConnection();
-        }
-        
-        
-        /** Creates a singular instance */
-        public static function getInstance()
-        {
-            if (self::$instance == null)
-                self::$instance = new Connection();
-        
-            return self::$instance;
+            $this->connection = null;
         }
 
 
-        /** Create connection to the database */
-        private function dbConnection() 
+        public function __destruct()
         {
-        	global $configs;
-        	
-            $host = $configs->host;
-            $username = $configs->username;
-            $password = $configs->password;
-            $database = $configs->database;
+            $this->disconnect();
+        }
 
-            $connect = "mysql:host=" . $host . "; dbname=" . $database . "; charset=utf8";
+
+        /** Connect to a database */
+        public function connect(string $host, string $username, string $password, string $database) 
+        {
+            $isConnectedToDatabase = !is_null($this->connection);
+            if ($isConnectedToDatabase) { return; }
+
+
+            $connect = "mysql:host=$host; dbname=$database; charset=utf8";
 
             try {
-                $this->con = new PDO($connect, $username, $password);
-                $this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $pdo = new PDO($connect, $username, $password);
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                $this->connection = $pdo;
             } 
             catch (PDOException $e) {
                 echo "<script> alert('ERROR \nConnection failed: " . $e->getMessage() . "') </script>";
             }
         }
+
+
+        /** Disconnect from the database */
+        public function disconnect()
+        {
+            $this->connection = null;
+        }
         
 
-        public function getConnection(): PDO { return $this->con; }
+        public function getConnection(): ?PDO { return $this->connection; }
     }
 ?>
