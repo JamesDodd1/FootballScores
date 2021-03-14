@@ -63,7 +63,8 @@
          */
         public function weekGames(int $seasonStart, int $weekNum, string $user): ?array 
         {
-            $sql = "SELECT ch.FullName AS HomeTeam, ca.FullName AS AwayTeam, sc.HomeScore, sc.AwayScore, g.KickOff, sc.Win, sc.Draw, sc.Lose, sc.Joker FROM Season s 
+            $sql = "SELECT ch.FullName AS HomeTeam, ca.FullName AS AwayTeam, sc.HomeScore, sc.AwayScore, g.KickOff, 
+                        sc.Win, sc.Draw, sc.Lose, sc.Joker FROM Season s 
                     INNER JOIN Week w ON s.SeasonID = w.SeasonID 
                     INNER JOIN Game g ON w.WeekID = g.WeekID 
                     INNER JOIN Score sc ON g.GameID = sc.GameID 
@@ -196,7 +197,10 @@
 
             if (is_null($joker)) 
             {
-                $sql = "UPDATE Score SET HomeScore = ?, AwayScore = ? WHERE GameID = ($game_Sub) AND UserID = ($user_Sub)";
+                $sql = "UPDATE Score 
+                        SET HomeScore = ?, AwayScore = ? 
+                        WHERE GameID = ($game_Sub) 
+                        AND UserID = ($user_Sub)";
                 
                 $this->crud->runSQL($sql, [$homeScore, $awayScore, $weekNum, $seasonStart, $homeTeam, $awayTeam, $user]);
             }
@@ -204,7 +208,10 @@
             {
                 $joker = $joker ? 1 : 0;
 
-                $sql = "UPDATE Score SET HomeScore = ?, AwayScore = ?, Joker = ? WHERE GameID = ($game_Sub) AND UserID = ($user_Sub)";
+                $sql = "UPDATE Score 
+                        SET HomeScore = ?, AwayScore = ?, Joker = ? 
+                        WHERE GameID = ($game_Sub) 
+                        AND UserID = ($user_Sub)";
 
                 $this->crud->runSQL($sql, [$homeScore, $awayScore, $joker, $weekNum, $seasonStart, $homeTeam, $awayTeam, $user]);
             }					
