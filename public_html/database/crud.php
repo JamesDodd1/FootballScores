@@ -11,7 +11,8 @@
             $this->databaseConnection = $databaseConnection; 
         } 
 
-        protected function select(string $sql, array $fields = [])
+
+        public function select(string $sql, array $fields = [])
         {
             if (is_null($this->databaseConnection)) { return null; }
 
@@ -38,7 +39,7 @@
 
 
         /** Runs SQL */
-        protected function runSQL(string $sql, array $fields = [])
+        public function runSQL(string $sql, array $fields = [])
         {
             if (is_null($this->databaseConnection)) { return false; }
 

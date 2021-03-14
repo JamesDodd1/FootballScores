@@ -1,14 +1,15 @@
 <?php
     require_once __DIR__ . '/crud.php';
     include_once __DIR__ . '/../mapping.php';
-
     
-    /** Database CRUD class */
-    class Database extends Crud
+    class Database
     {
-        public function __construct() 
+        private $crud;
+
+
+        public function __construct(PDO $databaseConnection) 
         { 
-            parent::__construct();
+            $this->crud = new Crud($databaseConnection);
         }
 
 
@@ -26,7 +27,7 @@
             $sql = "SELECT Name, Answers FROM User $where ORDER BY Answers ASC, Name ASC";
 
             $users = [];
-            foreach ($this->select($sql) as $user)
+            foreach ($this->crud->select($sql) as $user)
             {
                 $users[] = new User($user->Name, $user->Answers);
             } 
@@ -45,7 +46,7 @@
         public function getUser(string $user): ?User
         {
             $sql = "SELECT Name, Answers FROM User WHERE Name = ?";
-            $user = $this->select($sql, [$user]);
+            $user = $this->crud->select($sql, [$user]);
 
             return !is_null($user) ? new User($user->Name, $user->Answers) : null;
         }
@@ -72,7 +73,7 @@
                     WHERE YEAR(s.StartDate) = ? AND w.WeekNum = ? AND u.Name = ? AND g.Postponed = 0
                     ORDER BY KickOff ASC, ch.FullName ASC";
 
-            $rows = $this->select($sql, [$seasonStart, $weekNum, $user]);
+            $rows = $this->crud->select($sql, [$seasonStart, $weekNum, $user]);
 
             $matchNum = 0;
             $matches = [];
@@ -114,7 +115,7 @@
                         ORDER BY w.EndDate ASC
                         LIMIT 1";
                 
-                $row = $this->select($sql, [$seasonStart, $today]);
+                $row = $this->crud->select($sql, [$seasonStart, $today]);
 
 
                 // If no more weeks
@@ -127,7 +128,7 @@
                             ORDER BY w.EndDate DESC
                             LIMIT 1";
 
-                    $row = $this->select($sql, [$seasonStart, $today]);
+                    $row = $this->crud->select($sql, [$seasonStart, $today]);
                 }
             }
             else {
@@ -136,7 +137,7 @@
                         WHERE YEAR(s.StartDate) = ? AND w.WeekNum = ?
                         LIMIT 1";
 
-                $row = $this->select($sql, [$seasonStart, $weekNum]);
+                $row = $this->crud->select($sql, [$seasonStart, $weekNum]);
             }
             
             
@@ -153,7 +154,7 @@
                     INNER JOIN User u ON ws.UserID = u.UserID 
                     WHERE YEAR(s.StartDate) = ? AND w.WeekNum = ? AND u.Name = ?";
 
-            return $this->select($sql, [$seasonStart, $weekNum, $user])->{"Score"};
+            return $this->crud->select($sql, [$seasonStart, $weekNum, $user])->{"Score"};
         }
 
 
@@ -169,7 +170,7 @@
                     ORDER BY w.`StartTime` DESC
                     LIMIT 1";
             
-            return $this->select($sql, [$seasonStart, $today->format('Y-m-d H:i'), $user])->{"Score"};
+            return $this->crud->select($sql, [$seasonStart, $today->format('Y-m-d H:i'), $user])->{"Score"};
         }
 
 
@@ -197,7 +198,7 @@
             {
                 $sql = "UPDATE Score SET HomeScore = ?, AwayScore = ? WHERE GameID = ($game_Sub) AND UserID = ($user_Sub)";
                 
-                $this->runSQL($sql, [$homeScore, $awayScore, $weekNum, $seasonStart, $homeTeam, $awayTeam, $user]);
+                $this->crud->runSQL($sql, [$homeScore, $awayScore, $weekNum, $seasonStart, $homeTeam, $awayTeam, $user]);
             }
             else
             {
@@ -205,7 +206,7 @@
 
                 $sql = "UPDATE Score SET HomeScore = ?, AwayScore = ?, Joker = ? WHERE GameID = ($game_Sub) AND UserID = ($user_Sub)";
 
-                $this->runSQL($sql, [$homeScore, $awayScore, $joker, $weekNum, $seasonStart, $homeTeam, $awayTeam, $user]);
+                $this->crud->runSQL($sql, [$homeScore, $awayScore, $joker, $weekNum, $seasonStart, $homeTeam, $awayTeam, $user]);
             }					
         }
 
@@ -222,7 +223,7 @@
                     WHERE YEAR(s.StartDate) = ? AND w.StartTime <= ?
                     ORDER BY w.WeekNum ASC, u.UserID ASC";
             
-            $rows = $this->select($sql, [$season, $today->format('Y-m-d H:i')]);
+            $rows = $this->crud->select($sql, [$season, $today->format('Y-m-d H:i')]);
 
 
             $scores = [];
@@ -267,7 +268,7 @@
                     INNER JOIN Season s ON w.SeasonID = s.SeasonID
                     WHERE YEAR(s.StartDate) = ?";
 
-            return $this->select($sql, [$season])->{"WeekCount"};
+            return $this->crud->select($sql, [$season])->{"WeekCount"};
         }
         
 
@@ -280,7 +281,7 @@
                     WHERE YEAR(s.StartDate) = ? 
                     ORDER BY u.UserID ASC";
 					
-            return $this->select($sql, [$season]);
+            return $this->crud->select($sql, [$season]);
         }
 
 
@@ -302,7 +303,7 @@
                     GROUP BY u.`Name`
                     ORDER BY ss.`Score` DESC, ws.`Score` DESC, u.`Name` ASC";
             
-            return $this->select($sql, [$today->format('Y-m-d H:i'), $season]);
+            return $this->crud->select($sql, [$today->format('Y-m-d H:i'), $season]);
         }
 
         /**  */
@@ -329,7 +330,7 @@
                         GROUP BY c.FullName
                         ORDER BY c.FullName ASC";
                 
-                $pos = $this->select($sql, [$club->getFullName()]);
+                $pos = $this->crud->select($sql, [$club->getFullName()]);
 
                 $positions[] = new Position($club, intval($pos->Won), intval($pos->Drawn), intval($pos->Lost), intval($pos->GoalsFor), intval($pos->GoalsAgainst));
             }
@@ -378,7 +379,7 @@
             $sql = "SELECT Name, FullName, Abbreviation FROM Club WHERE Relegated = 0 ORDER BY FullName ASC";
 
             $allClubs = [];
-            foreach ($this->select($sql) as $club)
+            foreach ($this->crud->select($sql) as $club)
             {
                 $allClubs[] = new Club($club->Name, $club->FullName, $club->Abbreviation);
             }
@@ -391,7 +392,7 @@
         private function getClub(string $fullName): Club
         {
             $sql = "SELECT Name, FullName, Abbreviation FROM Club WHERE Relegated = 0 AND FullName = ?";
-            $club = $this->select($sql, [$fullName]);
+            $club = $this->crud->select($sql, [$fullName]);
 
             return new Club($club->Name, $club->FullName, $club->Abbreviation);
         }
@@ -401,7 +402,7 @@
         public function getSeason(int $season) 
         {
             $sql = "SELECT StartDate, EndDate FROM Season WHERE Year(StartDate) = ?";
-            $season = $this->select($sql, [$season]);
+            $season = $this->crud->select($sql, [$season]);
 
             return new Season(new DateTime($season->StartDate), new DateTime($season->EndDate));
         }
@@ -423,7 +424,7 @@
                         AND g.Postponed = 0 AND s.UserID = 1
                     ORDER BY g.KickOff DESC
                     LIMIT 5";
-            $form = $this->select($sql, [$fullName, $fullName, $from, $today, $today, $from]);
+            $form = $this->crud->select($sql, [$fullName, $fullName, $from, $today, $today, $from, $numOfGames]);
 
             return is_object($form) ? [$form] : $form;
         }
