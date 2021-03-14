@@ -1,5 +1,13 @@
 
-<?php $root = $_SERVER['DOCUMENT_ROOT']; ?>
+<?php
+	$root = $_SERVER['DOCUMENT_ROOT'];
+	
+	include_once "$root/database/connect.php";
+	$configs = include "$root/database/config.php";
+
+	$database = new Connection();
+	$database->connect($configs->host, $configs->username, $configs->password, $configs->database);
+?>
 
 <!DOCTYPE html>
 <HTML>
@@ -32,7 +40,8 @@
 
 			<?php
 				include_once "$root/games/weekGames.php";
-				echo (new ResultWeekGames())->gameWeekMatchesHTML(2020);
+				$resultWeekGames = new ResultWeekGames($database->getConnection());
+				echo $resultWeekGames->gameWeekMatchesHTML(2020);
 			?>
         </div>
 
