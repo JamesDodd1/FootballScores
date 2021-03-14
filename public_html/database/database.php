@@ -416,7 +416,7 @@
 
 
 
-        public function getClubsForm(string $fullName, DateTime $from) 
+        public function getClubsForm(string $fullName, DateTime $from, int $numOfGames = 5) 
         {
             $from = $from->format("Y-m-d H:i");
             $today = new DateTime("now", new DateTimeZone('Europe/London')); 
@@ -430,7 +430,7 @@
                     WHERE (ch.FullName = ? OR ca.FullName = ?) AND g.KickOff < IF(? > ?, ?, ?) 
                         AND g.Postponed = 0 AND s.UserID = 1
                     ORDER BY g.KickOff DESC
-                    LIMIT 5";
+                    LIMIT ?";
             $form = $this->crud->select($sql, [$fullName, $fullName, $from, $today, $today, $from, $numOfGames]);
 
             return is_object($form) ? [$form] : $form;
