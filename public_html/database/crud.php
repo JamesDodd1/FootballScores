@@ -1,52 +1,59 @@
 
 <?php
-    require_once 'connect.php';
+    //require_once 'connect.php';
 
     class Crud
     {
-        private $con;
+        private $databaseConnection;
 
-        public function __construct()
+        public function __construct(PDO $databaseConnection)
         {
-            $connect = Connection::getInstance();
-            $this->con = $connect->getConnection(); 
+            $this->databaseConnection = $databaseConnection; 
         } 
 
         protected function select(string $sql, array $fields = [])
         {
+            if (is_null($this->databaseConnection)) { return null; }
+
+
             try {
-                $query = $this->con->prepare($sql);
+                $query = $this->databaseConnection->prepare($sql);
                 $query->execute($fields);
 
-                $count = $query->rowCount();
+                $numOfRows = $query->rowCount();
 
-                if ($count == 0)
+                if ($numOfRows == 0)
                     return null;
-                else if ($count == 1)
+                else if ($numOfRows == 1)
                     return $query->fetch(PDO::FETCH_OBJ);
                 else 
                     return $query->fetchAll(PDO::FETCH_OBJ);
             } 
-            catch (Exception $e) 
-            {
+            catch (Exception $e) {
                 echo "<script> alert('Error: ".$e->getMessage()."') </script>";
-
-                return null;
             }
+
+            return null;
         }
+
 
         /** Runs SQL */
         protected function runSQL(string $sql, array $fields = [])
         {
+            if (is_null($this->databaseConnection)) { return false; }
+
+
             try {
-                $query = $this->con->prepare($sql);
+                $query = $this->databaseConnection->prepare($sql);
                 $query->execute($fields);
 
                 return $query->rowCount() ? true : false;
 
             } catch (Exception $e) {
-                echo "<script> alert('Error: ".$e->getMessage()."') </script>";
+                echo "<script> alert('Error: " . $e->getMessage() . "') </script>";
             }
+
+            return false;
         }
     }
 ?>
