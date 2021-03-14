@@ -1,8 +1,15 @@
 
 <?php 
     $root = $_SERVER['DOCUMENT_ROOT'];
+	
+	include_once "$root/database/connect.php";
+	$configs = include "$root/database/config.php";
+
+	$database = new Connection();
+	$database->connect($configs->host, $configs->username, $configs->password, $configs->database);
+
 	include_once "$root/database/database.php";
-	$db = new Database();
+	$db = new Database($database->getConnection());
 ?>
 
 <!DOCTYPE html>

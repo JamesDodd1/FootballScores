@@ -1,8 +1,15 @@
 
 <?php 
     $root = $_SERVER['DOCUMENT_ROOT'];
+	
+	include_once "$root/database/connect.php";
+	$configs = include "$root/database/config.php";
+
+	$database = new Connection();
+	$database->connect($configs->host, $configs->username, $configs->password, $configs->database);
+	
 	include_once "$root/database/database.php";
-	$db = new Database();
+	$db = new Database($database->getConnection());
 
     // Set Variables
 	$user = getUser();
@@ -46,10 +53,14 @@
             <?php
                 include_once "./weekGames.php";
 
-				if ($user->getIsAnswers())
-                	echo (new ResultWeekGames())->gameWeekMatchesHTML(2020, $weekNum);
-				else
-					echo (new PlayerWeekGames($user->getName()))->gameWeekMatchesHTML(2020, $weekNum);
+				if ($user->getIsAnswers()) {
+					$resultWeekGames = new ResultWeekGames($database->getConnection());
+                	echo $resultWeekGames->gameWeekMatchesHTML(2020, $weekNum);
+				}
+				else {
+					$playerWeekGames = new PlayerWeekGames($database->getConnection(), $user->getName());
+					echo $playerWeekGames->gameWeekMatchesHTML(2020, $weekNum);
+				}
             ?>
         </div>
 
@@ -88,6 +99,7 @@
 		$season = $_GET['season'];
 		return isset($season) ? intval($season) : 2020;
 	}
+
 
 	function getWeekNum()
 	{

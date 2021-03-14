@@ -2,7 +2,7 @@
 <?php
     $root = $_SERVER['DOCUMENT_ROOT'];
 	include_once "$root/database/database.php";
-    $db = new Database();
+    $db = new Database($database->getConnection());
 
     
     $isWeekNumSet = isset($_REQUEST['weekNum']);
@@ -26,7 +26,7 @@
     </li>
 
     <li class="weekSelect <?php echo $col; ?>" style="width: 80%;">
-        <?php echo (new WeekNumSelector())->weekSelectorHTML(2020, $weekNum); ?>
+        <?php echo (new WeekNumSelector($database->getConnection()))->weekSelectorHTML(2020, $weekNum); ?>
     </li>
 
     <li style="width: 10%;"> &nbsp; </li>
@@ -35,18 +35,21 @@
 
 <?php
     class WeekNumSelector {
-        public function __construct() { }
+        private $db;
+
+        public function __construct(PDO $databaseConnection)
+        {
+            $this->db = new Database($databaseConnection);
+        }
 
 
         public function weekSelectorHTML(int $season, int $selectedWeekNum = 0)
         {
-            $db = new Database();
-
             if ($selectedWeekNum == 0)
-                $selectedWeekNum = ($db->getCurrentWeek($season, $selectedWeekNum))->getWeekNum();
+                $selectedWeekNum = ($this->db->getCurrentWeek($season, $selectedWeekNum))->getWeekNum();
 
 
-            $weekNumCount = $db->totalWeeks($season);
+            $weekNumCount = $this->db->totalWeeks($season);
             
             $leftArrowHTML = $this->leftArrowHTML($selectedWeekNum);
             $weekNumDropdownHTML = $this->weekNumDropdownHTML($season, $selectedWeekNum);
@@ -62,7 +65,7 @@
 
         private function weekNumDropdownHTML(int $season, int $selectedWeekNum)
         {
-            $weekNumCount = (new Database())->totalWeeks($season);
+            $weekNumCount = $this->db->totalWeeks($season);
 
 
             $weekNumOptions = "";
