@@ -89,7 +89,7 @@
                 $lose = $row->Lose;
                 $joker = $row->Joker;
 
-                $matches[] = new Match(++$matchNum, $homeTeam, $awayTeam, $homeScore, $awayScore, $kickOff, $win, $draw, $lose, $joker);
+                $matches[] = new Game(++$matchNum, $homeTeam, $awayTeam, $homeScore, $awayScore, $kickOff, $win, $draw, $lose, $joker);
             }
 
             return $matches;
@@ -175,7 +175,7 @@
 
 
         /**  */
-        public function setScores(string $user, int $seasonStart, int $weekNum, Match $match, int $homeScore, int $awayScore, $joker = null)
+        public function setScores(string $user, int $seasonStart, int $weekNum, Game $match, int $homeScore, int $awayScore, $joker = null)
         {   
             $week_Sub = "SELECT w.WeekID FROM Week w
                          INNER JOIN Season s ON w.SeasonID = s.SeasonID 
