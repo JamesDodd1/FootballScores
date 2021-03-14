@@ -1,13 +1,5 @@
 
 <?php
-    /*
-    $nav_url = "/test/mapping";
-    $home_url = "/test/home";
-    
-    if ($_SERVER['REQUEST_URI'] == $nav_url) 
-        header("Location: $home_url");
-    */
-
     /**  */
     class User
     {
@@ -111,7 +103,7 @@
 
 
     /**  */
-    class Match //extends Week
+    class Game //extends Week
     {
         private $matchNum, $homeTeam, $awayTeam, $homeScore, $awayScore, $kickOff, $win, $draw, $lose, $joker;
 
