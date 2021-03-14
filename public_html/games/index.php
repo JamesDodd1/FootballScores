@@ -1,11 +1,20 @@
 
 <?php 
     $root = $_SERVER['DOCUMENT_ROOT'];
+	
+	include_once "$root/database/connect.php";
+	$configs = include "$root/database/config.php";
+
+	$database = new Connection();
+	$database->connect($configs->host, $configs->username, $configs->password, $configs->database);
+	
+	include_once "$root/database/database.php";
+	$db = new Database($database->getConnection());
 
     // Set Variables
 	$user = getUser();
-	
-	$season = 2020;
+	$season = getSeason();
+	$weekNum = getWeekNum();
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +39,6 @@
 	<?php include_once "$root/nav_bar.php"; ?>
 	
 	
-	<!-- ========== Page main body ========== -->
 	<div id="page">
 		<h1 class="name"> 
 			<?php echo $user->getName(); ?> 
@@ -45,10 +53,14 @@
             <?php
                 include_once "./weekGames.php";
 
-				if ($user->getIsAnswers())
-                	echo (new ResultWeekGames())->gameWeekMatchesHTML(2020, $weekNum);
-				else
-					echo (new PlayerWeekGames($user->getName()))->gameWeekMatchesHTML(2020, $weekNum);
+				if ($user->getIsAnswers()) {
+					$resultWeekGames = new ResultWeekGames($database->getConnection());
+                	echo $resultWeekGames->gameWeekMatchesHTML(2020, $weekNum);
+				}
+				else {
+					$playerWeekGames = new PlayerWeekGames($database->getConnection(), $user->getName());
+					echo $playerWeekGames->gameWeekMatchesHTML(2020, $weekNum);
+				}
             ?>
         </div>
 
@@ -67,14 +79,10 @@
 <?php
 	function getUser(): ?User
 	{
-		global $root;
+		global $db;
 		
-		include_once "$root/database/database.php";
-		$db = new Database();
-		
-		if (isset($_REQUEST['user']))
-		{
-			$user = $db->getUser($_REQUEST['user']);
+		if (isset($_GET['user'])) {
+			$user = $db->getUser($_GET['user']);
 			
 			if (is_null($user))
 				$user = $db->getUser("Results");
@@ -83,5 +91,19 @@
 			$user = $db->getUser("Results");
 		
 		return $user;
+	}
+
+
+	function getSeason()
+	{
+		$season = $_GET['season'];
+		return isset($season) ? intval($season) : 2020;
+	}
+
+
+	function getWeekNum()
+	{
+		$weekNum = $_GET['weekNum'];
+		return isset($weekNum) ? intval($weekNum) : 0;
 	}
 ?>

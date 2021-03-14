@@ -17,8 +17,9 @@
 
         $pos = 1;
         $season = "2020";
+        $db = new Database($database->getConnection());
         
-        foreach ((new Database())->leaderboard($season) as $player) {
+        foreach ($db->leaderboard($season) as $player) {
             echo "
             <tr class='player'>
                 <td class='pos'> <p> " . $pos++ . " </p> </td>

@@ -20,7 +20,9 @@
 
 <?php
 	function usersHTML() {
-		$db = new Database();
+		global $database;
+		
+		$db = new Database($database->getConnection());
 
 		$userDropDown = "";
 		foreach ($db->getAllUsers(false) as $users)

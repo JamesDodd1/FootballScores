@@ -77,7 +77,7 @@
         <?php
             $root = $_SERVER['DOCUMENT_ROOT'];
             include_once "$root/database/database.php";
-            $db = new Database();
+            $db = new Database($database->getConnection());
 
             $league = $db->getLeagueTable();
             $positions = $league->getPositions();

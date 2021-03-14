@@ -10,21 +10,22 @@
         protected $season;
         protected $week;
 
+        protected $db;
 
-        protected function __construct(string $playerName = "Results")
+
+        protected function __construct(PDO $databaseConnection, string $playerName = "Results")
         {
             $this->playerName = $playerName;
+            $this->db = new Database($databaseConnection);
         }
 
 
         protected function getWeekGames(int $season, int $weekNum)
         {
-            $db = new Database();
-
             $this->season = $season;
 
-            $this->week = $db->getCurrentWeek($season, $weekNum);
-	        $this->week->setMatches($db->weekGames($season, $this->week->getWeekNum(), $this->playerName));
+            $this->week = $this->db->getCurrentWeek($season, $weekNum);
+	        $this->week->setMatches($this->db->weekGames($season, $this->week->getWeekNum(), $this->playerName));
         }
 
 
@@ -73,9 +74,9 @@
 
     class ResultWeekGames extends WeekGames {
 
-        public function __construct() 
+        public function __construct(PDO $databaseConnection) 
         {
-            parent::__construct("Results");
+            parent::__construct($databaseConnection, "Results");
         }
 
 
@@ -156,9 +157,9 @@
     class PlayerWeekGames extends WeekGames {
         private $isScoresSet;
 
-        public function __construct(string $playerName) 
+        public function __construct(PDO $databaseConnection, string $playerName) 
         {
-            parent::__construct($playerName);
+            parent::__construct($databaseConnection, $playerName);
         }
 
 
@@ -255,10 +256,8 @@
 
         private function teamFormHTML($match, Club $team)
         {
-            $db = new Database();
-
             $clubFullName = $team->getFullName();
-            $clubForm = $db->getClubsForm($clubFullName, $match->getKickOff());
+            $clubForm = $this->db->getClubsForm($clubFullName, $match->getKickOff());
 
             if (is_null($clubForm)) { return ""; }
 
@@ -536,8 +535,8 @@
                     $isJoker = $_POST['joker'] == $match->getMatchNum() ? true : false;
                 
 
-                $db = new Database();
-                $db->setScores($this->playerName, $this->season, $this->week->getWeekNum(), $match, $homeScore, $awayScore, $isJoker);
+                $this->db->setScores($this->playerName, $this->season, $this->week->getWeekNum(), 
+                    $match, $homeScore, $awayScore, $isJoker);
             }
 
            
