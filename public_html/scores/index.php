@@ -1,15 +1,15 @@
 
 <?php 
-    $root = $_SERVER['DOCUMENT_ROOT'];
+    $root = $_SERVER['DOCUMENT_ROOT'] . "/public_html";
 	
-	include_once "$root/database/connect.php";
+	include_once "$root/database/database.php";
 	$configs = include "$root/database/config.php";
 
-	$database = new Connection();
+	$database = new FootballScores\Database\Database();
 	$database->connect($configs->host, $configs->username, $configs->password, $configs->database);
 
-	include_once "$root/database/database.php";
-	$db = new Database($database->getConnection());
+	include_once "$root/database/sql.php";
+	$db = new Sql($database->getConnection());
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +56,7 @@
 					<th> </th>
 					<?php
 						// Loop through each person
-						foreach ($db->getAllUsers(false) as $user) 
+						foreach ($db->getAllUsers() as $user) 
 						{
 							echo "<th colSpan='3'> <b>" . $user->getName() . "</b> </th>";
 						}
@@ -66,7 +66,7 @@
 
 				<!-- Weekly Scores -->
 				<?php
-					$season = 2020;
+					$season = 2021;
 					foreach ($db->getWeekScores($season) as $weekScore) 
 					{
 						$weekCount = count($weekScore);

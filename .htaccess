@@ -1,0 +1,18 @@
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^footballscores.test$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^www.footballscores.test$
+RewriteCond %{REQUEST_URI} !(public_html|resource|src)
+RewriteRule ^(.*)  /public_html/$1 [QSA]
+
+# RewriteCond %{HTTP_HOST} ^footballscores.test$ [NC,OR]
+# RewriteCond %{HTTP_HOST} ^www.footballscores.test$
+# RewriteCond %{REQUEST_URI} !public_html/
+# RewriteRule (.*) /public_html/$1 [L]
+
+
+ErrorDocument 400 http://footballscores.test/
+
+ErrorDocument 403 http://footballscores.test/
+ErrorDocument 404 http://footballscores.test/
+ErrorDocument 500 http://footballscores.test/
+ErrorDocument 503 http://footballscores.test/

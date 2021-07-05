@@ -1,0 +1,22 @@
+{
+    "name": "jamesdodd/football_scores",
+    "description": "",
+    "authors": [
+        {
+            "name": "JamesDodd1",
+            "email": "48354221+JamesDodd1@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Database\\": "database/",
+            "FootballScores\\": "public_html/",
+            "FootballScores\\Database\\": "public_html/database/",
+            "Source\\": "src/",
+            "Tests\\": "test/"
+        }
+    }
+}

@@ -1,6 +1,0 @@
-RewriteEngine on
-
-Redirect /database/config.php /
-Redirect /database/connect.php /
-Redirect /database/crud.php /
-Redirect /database/database.php /

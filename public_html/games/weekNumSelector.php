@@ -1,8 +1,8 @@
 
 <?php
-    $root = $_SERVER['DOCUMENT_ROOT'];
-	include_once "$root/database/database.php";
-    $db = new Database($database->getConnection());
+    $root = $_SERVER['DOCUMENT_ROOT'] . "/public_html";
+	include_once "$root/database/sql.php";
+    $db = new Sql($database->getConnection());
 
     
     $isWeekNumSet = isset($_REQUEST['weekNum']);
@@ -39,14 +39,14 @@
 
         public function __construct(PDO $databaseConnection)
         {
-            $this->db = new Database($databaseConnection);
+            $this->db = new Sql($databaseConnection);
         }
 
 
         public function weekSelectorHTML(int $season, int $selectedWeekNum = 0)
         {
             if ($selectedWeekNum == 0)
-                $selectedWeekNum = ($this->db->getCurrentWeek($season, $selectedWeekNum))->getWeekNum();
+                $selectedWeekNum = ($this->db->getWeek($season, $selectedWeekNum))->getWeekNum();
 
 
             $weekNumCount = $this->db->totalWeeks($season);

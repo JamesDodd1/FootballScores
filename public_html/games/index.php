@@ -1,20 +1,34 @@
 
 <?php 
-    $root = $_SERVER['DOCUMENT_ROOT'];
-	
-	include_once "$root/database/connect.php";
+    $root = $_SERVER['DOCUMENT_ROOT'] . "/public_html";
+	//header('Location: https://google.co.uk');
+	//echo $_SERVER['HTTP_HOST'];
+	include_once "$root/database/database.php";
 	$configs = include "$root/database/config.php";
 
-	$database = new Connection();
+	$database = new FootballScores\Database\Database();
 	$database->connect($configs->host, $configs->username, $configs->password, $configs->database);
 	
-	include_once "$root/database/database.php";
-	$db = new Database($database->getConnection());
+	include_once "$root/database/sql.php";
+	$db = new Sql($database->getConnection());
+
 
     // Set Variables
 	$user = getUser();
-	$season = getSeason();
-	$weekNum = getWeekNum();
+	$competition = getCompetition();
+	$season = getSeason($competition);
+	$weekNum = getWeekNum($competition, $season);
+	echo "hello";
+
+	if (is_null($user) || is_null($competition) || is_null($competition) || is_null($weekNum)) {
+		
+		if (is_null($user)) { $user = $db->getUser("Results"); }
+		if (is_null($competition)) { $competition = "euros"; }
+		if (is_null($season)) { $season = $db->getCurrentSeason($competition); }
+		if (is_null($weekNum)) { $weekNum = $db->getCurrentWeek($competition, $season)->getWeekNum(); }
+
+		header("Location: http://" . $_SERVER['HTTP_HOST'] . "/games/" . $user->getName() . "/$season/$weekNum");
+	}
 ?>
 
 <!DOCTYPE html>
@@ -55,21 +69,31 @@
 
 				if ($user->getIsAnswers()) {
 					$resultWeekGames = new ResultWeekGames($database->getConnection());
-                	echo $resultWeekGames->gameWeekMatchesHTML(2020, $weekNum);
+                	echo $resultWeekGames->gameWeekMatchesHTML($season, $weekNum);
 				}
 				else {
 					$playerWeekGames = new PlayerWeekGames($database->getConnection(), $user->getName());
-					echo $playerWeekGames->gameWeekMatchesHTML(2020, $weekNum);
+					echo $playerWeekGames->gameWeekMatchesHTML($season, $weekNum);
 				}
             ?>
         </div>
 
 		<div id="content" class="groupScores">
-			<?php include_once "$root/scores/leaderboard.php"; ?>
+			<?php
+			include_once "$root/scores/leaderboardFactory.php";
+
+			$leaderboard = LeaderboardFactory::create("euros", 2021);
+			echo $leaderboard->generateHTML();
+			?>
 		</div>
 
 		<div id="content" class="league">
-			<?php include_once "$root/table.php"; ?>
+			<?php
+			include_once "$root/table/tableFactory.php";
+
+			$table = TableFactory::create("euros", 2021);
+			echo $table->generateHTML();
+			?>
 		</div>
     </div>
 </body>
@@ -80,30 +104,39 @@
 	function getUser(): ?User
 	{
 		global $db;
-		
-		if (isset($_GET['user'])) {
-			$user = $db->getUser($_GET['user']);
-			
-			if (is_null($user))
-				$user = $db->getUser("Results");
-		}
-		else 
-			$user = $db->getUser("Results");
-		
-		return $user;
+
+		if (!isset($_GET['user'])) { return null; }
+
+		return $db->getUser($_GET['user']);
 	}
 
 
-	function getSeason()
+	function getCompetition()
 	{
-		$season = $_GET['season'];
-		return isset($season) ? intval($season) : 2020;
+		global $db;
+
+		//if (!isset($_GET['comeptition'])) { return null; }
+
+		return "euros";
 	}
 
 
-	function getWeekNum()
+	function getSeason($competition)
 	{
-		$weekNum = $_GET['weekNum'];
-		return isset($weekNum) ? intval($weekNum) : 0;
+		global $db;
+
+		if (!isset($_GET['season'])) { return null; }
+		echo ($competition);
+		return $db->getSeason($competition, isset($_GET['season']));
+	}
+
+
+	function getWeekNum($competition, $year)
+	{
+		global $db;
+
+		if (!isset($_GET['weekNum'])) { return null; }
+
+		return $db->getCurrentWeek($competition, $year, isset($_GET['weekNum']))->WeekNum;
 	}
 ?>
