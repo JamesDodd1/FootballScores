@@ -3,3 +3,6 @@
 
 # Config file
 public_html/database/config.php
+config/database.php
+
+/vendor
